@@ -18,6 +18,7 @@ NVIM_APPNAME=nnvim nvim
 - 编辑 nnvim 配置后，必须用 `NVIM_APPNAME=nnvim nvim` 测试生效
 - `options.lua` 当前留空，新增选项优先直接写入 `init.lua`
 - `lua/plugins/` 预留目录，装插件时按插件名分文件放入
+- 关联功能插件（如 Mason + lspconfig 三件套）可用一个文件返回多个 spec
 
 ## 设计原则
 - **学透再装** — 先理解内置方案，有明确不足再引入插件
@@ -36,6 +37,7 @@ NVIM_APPNAME=nnvim nvim
 │       ├── flash.lua
 │       ├── indent-blankline.lua
 │       ├── live-preview.lua
+│       ├── lsp.lua             # Mason + lspconfig + formatting
 │       ├── lualine.lua
 │       ├── luasnip.lua
 │       ├── persistence.lua
@@ -65,6 +67,9 @@ NVIM_APPNAME=nnvim nvim
 | `akinsho/toggleterm.nvim` | 浮动终端 |
 | `folke/which-key.nvim` | 输入提示按键弹窗 |
 | `folke/live-preview.nvim` | Markdown 实时预览 |
+| `williamboman/mason.nvim` | LSP server 安装器 |
+| `williamboman/mason-lspconfig.nvim` | Mason ↔ lspconfig 桥接 |
+| `neovim/nvim-lspconfig` | LSP 客户端配置 |
 
 ## 关键配置说明
 
@@ -103,6 +108,7 @@ NVIM_APPNAME=nnvim nvim
 | `<Esc>` | t | 退出终端模式 |
 | `<A-m>` | i | 插入 `$$  $$` 行间公式 |
 | `<A-s>` | i | 插入 `$` 行内公式 |
+| `<leader>f` | n | LSP 格式化 |
 
 ### 已排雷
 - `ttimeoutlen = 0` → 导致终端 DA 序列被拆解，showcmd 显示 `42c`，光标变下划线
