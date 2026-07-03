@@ -4,6 +4,7 @@
 - 系统：WSL2 openSUSE Tumbleweed
 - 终端：WezTerm（配置：`/mnt/c/Users/Loss_/.wezterm.lua`）
 - Neovim：v0.12.2（内置 LSP、Treesitter）
+- Rust：rustup 管理，`~/.cargo/bin` 在 PATH 中
 
 ## 启动方式
 `~/.config/nvim` → `~/.config/nnvim` 符号链接，直接 `nvim` 即可使用 nnvim 配置。
@@ -23,6 +24,7 @@ rm ~/.config/nvim && mv ~/.config/nvim.bak ~/.config/nvim
 - 编辑 nnvim 配置后，必须用 `nvim` 测试生效
 - `options.lua` 当前留空，新增选项优先直接写入 `init.lua`
 - `lua/plugins/` 预留目录，装插件时按插件名分文件放入
+- blink.cmp 需要 Rust toolchain 做 native 构建，首次装完后手动 cargo build（或 lazy build）
 - 关联功能插件（如 Mason + lspconfig 三件套）可用一个文件返回多个 spec
 
 ## 设计原则
@@ -36,8 +38,9 @@ rm ~/.config/nvim && mv ~/.config/nvim.bak ~/.config/nvim
 ├── lua/
 │   ├── options.lua       # （预留）选项不够多了再拆
 │   ├── keymaps.lua       # 快捷键映射
-│   └── plugins/          # 插件规格文件（15 个）
+│   └── plugins/          # 插件规格文件（16 个）
 │       ├── autopairs.lua
+│       ├── blink.lua
 │       ├── comment.lua
 │       ├── flash.lua
 │       ├── indent-blankline.lua
@@ -75,6 +78,8 @@ rm ~/.config/nvim && mv ~/.config/nvim.bak ~/.config/nvim
 | `williamboman/mason.nvim` | LSP server 安装器 |
 | `williamboman/mason-lspconfig.nvim` | Mason ↔ lspconfig 桥接 |
 | `neovim/nvim-lspconfig` | LSP 客户端配置 |
+| `saghen/blink.cmp` | 自动补全引擎（Rust fuzzy） |
+| `saghen/blink.lib` | blink.cmp 原生库 |
 
 ## 关键配置说明
 
@@ -111,6 +116,10 @@ rm ~/.config/nvim && mv ~/.config/nvim.bak ~/.config/nvim
 | `J`/`K` | v | 上下移动选中行 |
 | `n`/`N` | n | 跳转后光标居中 |
 | `<Esc>` | t | 退出终端模式 |
+| `<C-b>` | i | 左移一个字符（跳出括号用） |
+| `<C-f>` | i | 右移一个字符 |
+| `<C-u>` | i | 补全文档上滚 |
+| `<C-d>` | i | 补全文档下滚 |
 | `<A-m>` | i | 插入 `$$  $$` 行间公式 |
 | `<A-s>` | i | 插入 `$` 行内公式 |
 | `gd` | n | LSP 跳转定义 |
@@ -119,6 +128,11 @@ rm ~/.config/nvim && mv ~/.config/nvim.bak ~/.config/nvim
 | `gy` | n | LSP 跳转类型定义 |
 | `gl` | n | LSP 行诊断浮窗 |
 | `<leader>f` | n | LSP 格式化 |
+| `<Tab>` | i | 接受补全 / 跳转 snippet / 缩进 |
+| `C-y` | i | 接受补全（备选键） |
+| `C-n/C-p` | i | 选择上/下一个补全项 |
+| `C-e` | i | 关闭补全菜单 |
+| `C-space` | i | 手动触发补全 |
 
 ### 已排雷
 - `ttimeoutlen = 0` → 导致终端 DA 序列被拆解，showcmd 显示 `42c`，光标变下划线

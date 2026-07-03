@@ -45,21 +45,20 @@ map("t", "<Esc>", "<C-\\><C-n>", opts)
 map("x", "<leader>p", [["_dP]], opts)
 
 -- 替换光标附近单词
-map("n", "<leader>s", ":%s/\\<<C-r><C-w>\\>//g<Left><Left>", opts)
+map("n", "<leader>s", ":%s/<C-r><C-a>//g<Left><Left>", opts)
 
--- LuaSnip: Tab 展开/跳转
-vim.schedule(function()
-  local ls = require("luasnip")
-  map("i", "<Tab>", function()
-    if ls.expand_or_jumpable() then ls.expand_or_jump()
-    else vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", true) end
-  end, opts)
-  map("i", "<S-Tab>", function()
-    if ls.jumpable(-1) then ls.jump(-1)
-    else vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<S-Tab>", true, false, true), "n", true) end
-  end, opts)
-end)
+-- S-Tab dedent
+map("i", "<S-Tab>", "<C-d>", opts)
 
--- markdown math
-map("i", "<A-m>", "$$  $$<Esc>2hi", opts)
-map("i", "<A-s>", "$$<Left>", opts)
+-- insert mode 方向键：C-b 左移，C-f 右移（已覆盖 blink 默认绑定）
+map("i", "<C-b>", "<Left>", opts)
+map("i", "<C-f>", "<Right>", opts)
+
+-- markdown math（仅在 md 文件生效）
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    map("i", "<A-m>", "$$  $$<Esc>2hi", opts)
+    map("i", "<A-s>", "$$<Left>", opts)
+  end,
+})
