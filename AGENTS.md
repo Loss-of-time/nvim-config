@@ -116,3 +116,9 @@ NVIM_APPNAME=nnvim nvim
 - 每加一个插件前先问：内置方案真的不够？
 - 快捷键定义原则：插件相关快捷键 → 写在该插件的 `keys` 字段内；编辑器全局快捷键（非插件特定）→ 写在 `lua/keymaps.lua`
 - 编辑后手动用 `NVIM_APPNAME=nnvim nvim` 验证
+
+## Git 规范
+- **分支**：只有 `main`，不建 dev/feature 分支
+- **提交信息**：一行标题，可选 scope 前缀，写清楚改动内容即可（不强制 Conventional Commits）
+- **粒度**：一个独立改动一个 commit，不攒批
+- **Tag**：遇到稳定里程碑打 `v0.1`、`v0.2` 格式
