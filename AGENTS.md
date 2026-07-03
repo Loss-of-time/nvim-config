@@ -108,6 +108,11 @@ NVIM_APPNAME=nnvim nvim
 | `<Esc>` | t | 退出终端模式 |
 | `<A-m>` | i | 插入 `$$  $$` 行间公式 |
 | `<A-s>` | i | 插入 `$` 行内公式 |
+| `gd` | n | LSP 跳转定义 |
+| `gr` | n | LSP 查找引用 |
+| `gI` | n | LSP 跳转实现 |
+| `gy` | n | LSP 跳转类型定义 |
+| `gl` | n | LSP 行诊断浮窗 |
 | `<leader>f` | n | LSP 格式化 |
 
 ### 已排雷

@@ -10,11 +10,21 @@ return {
     vim.lsp.enable("marksman")
 
     vim.api.nvim_create_autocmd("LspAttach", {
-      group = vim.api.nvim_create_augroup("nnvim-lsp-format", { clear = true }),
+      group = vim.api.nvim_create_augroup("nnvim-lsp", { clear = true }),
       callback = function(args)
-        vim.keymap.set("n", "<leader>f", function()
-          vim.lsp.buf.format({ bufnr = args.buf })
-        end, { buffer = args.buf, noremap = true, silent = true, desc = "LSP format" })
+        local buf = args.buf
+        local map = function(mode, lhs, rhs, desc)
+          vim.keymap.set(mode, lhs, rhs, { buffer = buf, noremap = true, silent = true, desc = desc })
+        end
+
+        map("n", "gd", vim.lsp.buf.definition, "LSP definition")
+        map("n", "gr", vim.lsp.buf.references, "LSP references")
+        map("n", "gI", vim.lsp.buf.implementation, "LSP implementation")
+        map("n", "gy", vim.lsp.buf.type_definition, "LSP type definition")
+        map("n", "gl", vim.diagnostic.open_float, "LSP line diagnostics")
+        map("n", "<leader>f", function()
+          vim.lsp.buf.format({ bufnr = buf })
+        end, "LSP format")
       end,
     })
   end,
