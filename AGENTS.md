@@ -6,16 +6,21 @@
 - Neovim：v0.12.2（内置 LSP、Treesitter）
 
 ## 启动方式
-nnvim 使用独立配置目录 `~/.config/nnvim/`，通过 `NVIM_APPNAME` 启动：
+`~/.config/nvim` → `~/.config/nnvim` 符号链接，直接 `nvim` 即可使用 nnvim 配置。
+原 LazyVim 配置已备份为 `~/.config/nvim.bak`。
 
 ```bash
-NVIM_APPNAME=nnvim nvim
+nvim
 ```
 
-未设置永久环境变量，需要手动前缀。
+需要恢复 LazyVim 配置时删除符号链接并重命名备份：
+
+```bash
+rm ~/.config/nvim && mv ~/.config/nvim.bak ~/.config/nvim
+```
 
 ## Agent 操作规范
-- 编辑 nnvim 配置后，必须用 `NVIM_APPNAME=nnvim nvim` 测试生效
+- 编辑 nnvim 配置后，必须用 `nvim` 测试生效
 - `options.lua` 当前留空，新增选项优先直接写入 `init.lua`
 - `lua/plugins/` 预留目录，装插件时按插件名分文件放入
 - 关联功能插件（如 Mason + lspconfig 三件套）可用一个文件返回多个 spec
